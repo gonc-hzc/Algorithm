@@ -12,7 +12,7 @@ typedef struct StructureName  //结构体标签名
 struct StructureName  //结构体标签名
 {
     char data;
-    struct  StructureName *p;  //标签名可以用来定义指针
+    struct  StructureName *p;  //标签名可以用来定义指针，且必须带上struct
 }; 
 
 这种写法定义变量必须加struct：struct StructureName a;
