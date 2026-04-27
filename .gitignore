@@ -2,3 +2,7 @@
 build/
 **/build/
 *.dSYM/
+*.exe
+
+# Jupyter
+.ipynb_checkpoints/
