@@ -7,6 +7,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAXSIZE 100
 typedef int Elemtype;  //将int类型定义为Elemtype类型
@@ -29,6 +30,15 @@ void listList(SeqList *L)
     for(int i = 0 ; i < L->length ; i++)
     {
         printf("%d  ", L->data[i]);
+    }
+    printf("\n");
+}
+
+void listList2(SeqList2 *L)
+{
+    for(int i = 0 ; i < L->length ; i++)
+    {
+        printf("%d " , L->data[i]);
     }
     printf("\n");
 }
@@ -61,6 +71,18 @@ int appendElem(SeqList *L , Elemtype e)
     return 0; //返回0表示添加成功
 }
 
+int appendElem2(SeqList2 *L , Elemtype e)
+{
+    if(L->length >= MAXSIZE)
+    {
+        printf("顺序表已满\n");
+        return -1;
+    }
+    L->data[L->length] = e;
+    L->length++;
+    return 0;
+}
+
 //指定位置插入元素
 void insertElem(SeqList *L , int pos , Elemtype e)
 {
@@ -72,6 +94,19 @@ void insertElem(SeqList *L , int pos , Elemtype e)
         }
         L->data[pos] = e; //将元素插入到指定位置
         L->length++; //顺序表长度增加1
+    }
+}
+
+void insertElem2(SeqList2 *L , int pos , Elemtype e)
+{
+    if(pos <= L->length-1 && pos >=0)
+    {
+        for(int i = L->length-1 ; i >= pos ; i--)
+        {
+            L->data[i+1] = L->data[i];
+        }
+        L->data[pos] = e;
+        L->length++;
     }
 }
 
@@ -89,13 +124,36 @@ void findElem(SeqList *L , Elemtype e)
     }
     if(pos != -1)
     {
-        printf("找到元素%d，位置为%d\n" , e , pos);
+        printf("找到元素 %d , 位置为%d\n" , e , pos);
     }
     else
     {
         printf("未找到元素%d\n" , e);
     }
 }
+
+void findElem2(SeqList2 *L , Elemtype e)
+{
+    int pos = -1;
+    for(int i = 0 ; i < L->length ; i++)
+    {
+        if(L->data[i] == e)
+        {
+            pos = i;
+            break;
+        }
+    }
+    if(pos != -1)
+    {
+        printf("找到元素 %d , 位置为 %d\n" , e , pos);
+    }
+    else
+    {
+        printf("未找到元素%d\n" , e);
+    }
+}
+
+
 
 //删除元素
 void deleteElem(SeqList *L , int pos , Elemtype *e)
@@ -122,6 +180,28 @@ void deleteElem(SeqList *L , int pos , Elemtype *e)
 
 }
 
+void deleteElem2(SeqList2 *L , int pos , Elemtype *e)
+{
+    *e = L->data[pos];
+    if(pos < 0 || pos >= L->length)
+    {
+        printf("删除位置不合法\n");
+        return;
+    }
+    if(pos < L->length-1)
+    {
+        for(int i = pos ; i < L->length-1; i--)
+        {
+            L->data[i] = L->data[i+1];
+        }
+        L->length--;
+    }
+    else
+    {
+        L->length--;
+    }
+}
+
 int main()
 {
     //声明一个顺序表并初始化
@@ -134,8 +214,10 @@ int main()
     appendElem(&list , 30);
     listList(&list); //输出顺序表中的元素
     insertElem(&list , 2 , 15); //在位置2插入元素15
-    listList(&list); //输出顺序表中的元素
+    //listList(&list); //输出顺序表中的元素
     insertElem(&list , 0 , 18); //在位置0插入元素18
+    listList(&list);
+    insertElem(&list , 4 , 1122);
     listList(&list); //输出顺序表中的元素
     int e; //声明一个变量用于保存删除的元素
     deleteElem(&list , 3 , &e); //删除位置3的元素，并将删除的元素保存到变量e中
@@ -146,6 +228,10 @@ int main()
     SeqList2 * list2 = initList2(); //动态分配内存初始化顺序表
     printf("当前顺序表长度为 %d\n" , list2->length);
     printf("当前顺序表占用 %zu字节内存大小 \n" , sizeof(list2->data));
+    appendElem2(list2 , 88);
+    appendElem2(list2 , 60);
+    appendElem2(list2 , 78);
     listList2(list2); //输出顺序表中的元素
+
     return 0;
 }
